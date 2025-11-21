@@ -1,7 +1,9 @@
 /*
  * clipman.h
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -28,6 +30,7 @@
 #include <gdk/gdkx.h>
 #include <gio/gio.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 #include <gtk/gtk.h>
 #include <sqlite3.h>
 #include <string.h>

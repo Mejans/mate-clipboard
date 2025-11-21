@@ -1,7 +1,9 @@
 /*
  * clipman-history.c
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -161,7 +163,7 @@ create_item_row (ClipmanHistory *self, ClipmanItem *item)
   delete_btn = gtk_button_new_from_icon_name ("edit-delete-symbolic",
                                               GTK_ICON_SIZE_BUTTON);
   gtk_button_set_relief (GTK_BUTTON (delete_btn), GTK_RELIEF_NONE);
-  gtk_widget_set_tooltip_text (delete_btn, "Delete this item");
+  gtk_widget_set_tooltip_text (delete_btn, _ ("Delete this item"));
   g_object_set_data (G_OBJECT (delete_btn), "item-id",
                      GINT_TO_POINTER ((gint)clipman_item_get_id (item)));
   gtk_box_pack_end (GTK_BOX (box), delete_btn, FALSE, FALSE, 0);
@@ -297,7 +299,7 @@ clipman_history_init (ClipmanHistory *self)
   GtkWidget *header;
   GtkWidget *clear_btn;
 
-  gtk_window_set_title (GTK_WINDOW (self), "Clipboard History");
+  gtk_window_set_title (GTK_WINDOW (self), _ ("Clipboard History"));
   gtk_window_set_default_size (GTK_WINDOW (self), 400, 450);
   gtk_window_set_type_hint (GTK_WINDOW (self),
                             GDK_WINDOW_TYPE_HINT_POPUP_MENU);
@@ -321,13 +323,13 @@ clipman_history_init (ClipmanHistory *self)
 
   self->search_entry = gtk_search_entry_new ();
   gtk_entry_set_placeholder_text (GTK_ENTRY (self->search_entry),
-                                  "Search history...");
+                                  _ ("Search history..."));
   gtk_widget_set_hexpand (self->search_entry, TRUE);
   gtk_box_pack_start (GTK_BOX (header), self->search_entry, TRUE, TRUE, 0);
 
   clear_btn = gtk_button_new_from_icon_name ("edit-clear-all-symbolic",
                                              GTK_ICON_SIZE_BUTTON);
-  gtk_widget_set_tooltip_text (clear_btn, "Clear all history");
+  gtk_widget_set_tooltip_text (clear_btn, _ ("Clear all history"));
   gtk_box_pack_end (GTK_BOX (header), clear_btn, FALSE, FALSE, 0);
 
   /* Separator */
@@ -353,7 +355,7 @@ clipman_history_init (ClipmanHistory *self)
   gtk_container_add (GTK_CONTAINER (self->scrolled), self->list_box);
 
   /* Empty state */
-  self->empty_label = gtk_label_new ("No clipboard history");
+  self->empty_label = gtk_label_new (_ ("No clipboard history"));
   gtk_widget_set_sensitive (self->empty_label, FALSE);
   gtk_stack_add_named (GTK_STACK (self->stack), self->empty_label, "empty");
 

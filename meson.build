@@ -8,6 +8,8 @@ project('mate-clipman', 'c',
   ]
 )
 
+i18n = import('i18n')
+
 # Dependencies
 glib_dep = dependency('glib-2.0', version: '>= 2.50')
 gobject_dep = dependency('gobject-2.0', version: '>= 2.50')
@@ -26,6 +28,7 @@ conf.set_quoted('PACKAGE_NAME', meson.project_name())
 conf.set_quoted('PACKAGE_VERSION', meson.project_version())
 conf.set_quoted('PACKAGE_DATADIR', join_paths(get_option('prefix'), get_option('datadir'), meson.project_name()))
 conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
+conf.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set('HAVE_MATE_PANEL', mate_panel_dep.found())
 
 config_h = configure_file(
@@ -87,3 +90,6 @@ endif
 
 # Data files
 subdir('data')
+
+# Translations
+subdir('po')

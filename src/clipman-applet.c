@@ -1,7 +1,9 @@
 /*
  * clipman-applet.c
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -121,9 +123,9 @@ on_clear_requested (ClipmanHistory *history, gpointer user_data)
     {
       GtkWidget *dialog = gtk_message_dialog_new (
           NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
-          "Clear all clipboard history?");
+          _ ("Clear all clipboard history?"));
       gtk_message_dialog_format_secondary_text (
-          GTK_MESSAGE_DIALOG (dialog), "This action cannot be undone.");
+          GTK_MESSAGE_DIALOG (dialog), _ ("This action cannot be undone."));
 
       gint response = gtk_dialog_run (GTK_DIALOG (dialog));
       gtk_widget_destroy (dialog);
@@ -168,20 +170,21 @@ show_about (GtkAction *action, gpointer user_data)
 {
   const gchar *authors[] = { "MATE Clipboard Manager Authors", NULL };
 
-  gtk_show_about_dialog (NULL, "program-name", "MATE Clipboard Manager",
+  gtk_show_about_dialog (NULL, "program-name", _ ("MATE Clipboard Manager"),
                          "version", PACKAGE_VERSION, "comments",
-                         "A clipboard history manager for MATE Desktop",
+                         _ ("A clipboard history manager for MATE Desktop"),
                          "copyright", "Copyright \xc2\xa9 2024",
                          "license-type", GTK_LICENSE_GPL_3_0, "authors",
                          authors, "logo-icon-name", "edit-paste", NULL);
 }
 
 static const GtkActionEntry applet_menu_actions[] = {
-  { "Preferences", "preferences-system", "_Preferences", NULL, NULL,
+  { "Preferences", "preferences-system", N_ ("_Preferences"), NULL, NULL,
     G_CALLBACK (show_preferences) },
-  { "Clear", "edit-clear-all", "_Clear History", NULL, NULL,
+  { "Clear", "edit-clear-all", N_ ("_Clear History"), NULL, NULL,
     G_CALLBACK (clear_history) },
-  { "About", "help-about", "_About", NULL, NULL, G_CALLBACK (show_about) },
+  { "About", "help-about", N_ ("_About"), NULL, NULL,
+    G_CALLBACK (show_about) },
 };
 
 static const gchar *applet_menu_xml
@@ -235,7 +238,7 @@ clipman_applet_fill (MatePanelApplet *applet)
   /* Create button */
   data->button = gtk_button_new ();
   gtk_button_set_relief (GTK_BUTTON (data->button), GTK_RELIEF_NONE);
-  gtk_widget_set_tooltip_text (data->button, "Clipboard History");
+  gtk_widget_set_tooltip_text (data->button, _ ("Clipboard History"));
 
   data->image
       = gtk_image_new_from_icon_name ("edit-paste", GTK_ICON_SIZE_BUTTON);
@@ -269,6 +272,7 @@ clipman_applet_fill (MatePanelApplet *applet)
 
   /* Set up menu */
   action_group = gtk_action_group_new ("ClipmanAppletActions");
+  gtk_action_group_set_translation_domain (action_group, GETTEXT_PACKAGE);
   gtk_action_group_add_actions (action_group, applet_menu_actions,
                                 G_N_ELEMENTS (applet_menu_actions), data);
 

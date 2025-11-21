@@ -1,7 +1,9 @@
 /*
  * clipman-storage.c
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify

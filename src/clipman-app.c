@@ -1,7 +1,9 @@
 /*
- * clipman-app.c
+ * clipman-app.c\
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -127,9 +129,9 @@ on_clear_requested (ClipmanHistory *history, gpointer user_data)
           GTK_WINDOW (history),
           GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
           GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
-          "Clear all clipboard history?");
+          _ ("Clear all clipboard history?"));
       gtk_message_dialog_format_secondary_text (
-          GTK_MESSAGE_DIALOG (dialog), "This action cannot be undone.");
+          GTK_MESSAGE_DIALOG (dialog), _ ("This action cannot be undone."));
 
       gint response = gtk_dialog_run (GTK_DIALOG (dialog));
       gtk_widget_destroy (dialog);
@@ -225,12 +227,12 @@ on_menu_clear_history (GtkMenuItem *item, gpointer user_data)
 static void
 on_menu_about (GtkMenuItem *item, gpointer user_data)
 {
-  const gchar *authors[] = { "Kerem Soke", NULL };
+  const gchar *authors[] = { "MATE Clipboard Manager Authors", NULL };
 
-  gtk_show_about_dialog (NULL, "program-name", "MATE Clipboard Manager",
+  gtk_show_about_dialog (NULL, "program-name", _ ("MATE Clipboard Manager"),
                          "version", PACKAGE_VERSION, "comments",
-                         "A clipboard history manager for MATE Desktop",
-                         "copyright", "Copyright \xc2\xa9 2025",
+                         _ ("A clipboard history manager for MATE Desktop"),
+                         "copyright", "Copyright \xc2\xa9 2024",
                          "license-type", GTK_LICENSE_GPL_3_0, "authors",
                          authors, "logo-icon-name", "edit-paste", NULL);
 }
@@ -250,30 +252,30 @@ create_status_icon (ClipmanApp *self)
   /* Create menu */
   self->menu = gtk_menu_new ();
 
-  item = gtk_menu_item_new_with_label ("Show History");
+  item = gtk_menu_item_new_with_label (_ ("Show History"));
   g_signal_connect (item, "activate", G_CALLBACK (on_menu_show_history), self);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu),
                          gtk_separator_menu_item_new ());
 
-  item = gtk_menu_item_new_with_label ("Clear History");
+  item = gtk_menu_item_new_with_label (_ ("Clear History"));
   g_signal_connect (item, "activate", G_CALLBACK (on_menu_clear_history),
                     self);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
 
-  item = gtk_menu_item_new_with_label ("Preferences");
+  item = gtk_menu_item_new_with_label (_ ("Preferences"));
   g_signal_connect (item, "activate", G_CALLBACK (on_menu_preferences), self);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
 
-  item = gtk_menu_item_new_with_label ("About");
+  item = gtk_menu_item_new_with_label (_ ("About"));
   g_signal_connect (item, "activate", G_CALLBACK (on_menu_about), self);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
 
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu),
                          gtk_separator_menu_item_new ());
 
-  item = gtk_menu_item_new_with_label ("Quit");
+  item = gtk_menu_item_new_with_label (_ ("Quit"));
   g_signal_connect (item, "activate", G_CALLBACK (on_menu_quit), self);
   gtk_menu_shell_append (GTK_MENU_SHELL (self->menu), item);
 
@@ -282,7 +284,7 @@ create_status_icon (ClipmanApp *self)
   /* Create status icon */
   self->status_icon = gtk_status_icon_new_from_icon_name ("edit-paste");
   gtk_status_icon_set_tooltip_text (self->status_icon,
-                                    "MATE Clipboard Manager");
+                                    _ ("MATE Clipboard Manager"));
   gtk_status_icon_set_visible (self->status_icon, TRUE);
 
   g_signal_connect (self->status_icon, "activate",
@@ -352,6 +354,11 @@ clipman_app_activate (GApplication *app)
     {
       clipman_history_show_popup (self->history);
     }
+  else
+    {
+      /* Only suppress the very first activation when started hidden */
+      self->start_hidden = FALSE;
+    }
 }
 
 static gint
@@ -419,7 +426,7 @@ clipman_app_init (ClipmanApp *self)
 {
   g_application_add_main_option (G_APPLICATION (self), "hidden", 'h',
                                  G_OPTION_FLAG_NONE, G_OPTION_ARG_NONE,
-                                 "Start hidden in system tray", NULL);
+                                 _ ("Start hidden in system tray"), NULL);
 }
 
 ClipmanApp *

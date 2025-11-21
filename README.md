@@ -90,7 +90,7 @@ exec /path/to/mate-clipboard/builddir/mate-clipman "$@"
 # Normal start (shows history popup)
 mate-clipman
 
-# Start hidden in system tray
+# Start hidden in system tray (for autostart)
 mate-clipman --hidden
 ```
 

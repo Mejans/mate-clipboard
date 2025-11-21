@@ -1,0 +1,9 @@
+src/main.c
+src/clipman-app.c
+src/clipman-applet.c
+src/clipman-history.c
+src/clipman-item.c
+src/clipman-preferences.c
+data/mate-clipman.desktop.in
+data/mate-clipman-autostart.desktop.in
+data/org.mate.panel.ClipmanApplet.mate-panel-applet.desktop.in

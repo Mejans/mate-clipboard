@@ -1,7 +1,9 @@
 /*
  * main.c
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -22,15 +24,22 @@
  * 
  */
 
-
+ 
 #include "clipman.h"
 #include "config.h"
+#include <locale.h>
 
 int
 main (int argc, char *argv[])
 {
   ClipmanApp *app;
   int status;
+
+  /* Initialize localization */
+  setlocale (LC_ALL, "");
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 
   /* Ensure X11 backend for clipboard operations */
   gdk_set_allowed_backends ("x11");

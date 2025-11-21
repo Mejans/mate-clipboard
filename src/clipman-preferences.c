@@ -1,7 +1,9 @@
 /*
  * clipman-preferences.c
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -70,7 +72,7 @@ create_section_label (const gchar *text)
   gchar *markup;
 
   label = gtk_label_new (NULL);
-  markup = g_strdup_printf ("<b>%s</b>", text);
+  markup = g_markup_printf_escaped ("<b>%s</b>", text);
   gtk_label_set_markup (GTK_LABEL (label), markup);
   g_free (markup);
 
@@ -99,11 +101,12 @@ clipman_preferences_init (ClipmanPreferences *self)
   GtkWidget *label;
   GtkWidget *box;
 
-  gtk_window_set_title (GTK_WINDOW (self), "Clipboard Manager Preferences");
+  gtk_window_set_title (GTK_WINDOW (self),
+                        _ ("Clipboard Manager Preferences"));
   gtk_window_set_default_size (GTK_WINDOW (self), 450, -1);
   gtk_window_set_resizable (GTK_WINDOW (self), FALSE);
 
-  gtk_dialog_add_button (GTK_DIALOG (self), "_Close", GTK_RESPONSE_CLOSE);
+  gtk_dialog_add_button (GTK_DIALOG (self), _ ("_Close"), GTK_RESPONSE_CLOSE);
 
   content = gtk_dialog_get_content_area (GTK_DIALOG (self));
   gtk_container_set_border_width (GTK_CONTAINER (content), 12);
@@ -112,8 +115,8 @@ clipman_preferences_init (ClipmanPreferences *self)
   gtk_container_add (GTK_CONTAINER (content), vbox);
 
   /* General section */
-  gtk_box_pack_start (GTK_BOX (vbox), create_section_label ("General"), FALSE,
-                      FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox), create_section_label (_ ("General")),
+                      FALSE, FALSE, 0);
 
   grid = gtk_grid_new ();
   gtk_grid_set_column_spacing (GTK_GRID (grid), 12);
@@ -121,93 +124,95 @@ clipman_preferences_init (ClipmanPreferences *self)
   gtk_box_pack_start (GTK_BOX (vbox), create_indented_widget (grid), FALSE,
                       FALSE, 0);
 
-  label = gtk_label_new ("History size:");
+  label = gtk_label_new (_ ("History size:"));
   gtk_label_set_xalign (GTK_LABEL (label), 0.0);
   gtk_grid_attach (GTK_GRID (grid), label, 0, 0, 1, 1);
 
   self->history_size_spin = gtk_spin_button_new_with_range (1, 500, 1);
-  gtk_widget_set_tooltip_text (self->history_size_spin,
-                               "Maximum number of items to keep in history");
+  gtk_widget_set_tooltip_text (
+      self->history_size_spin,
+      _ ("Maximum number of items to keep in history"));
   gtk_grid_attach (GTK_GRID (grid), self->history_size_spin, 1, 0, 1, 1);
 
   self->keep_content_check = gtk_check_button_new_with_label (
-      "Keep clipboard content when source closes");
-  gtk_widget_set_tooltip_text (
-      self->keep_content_check,
-      "Restore clipboard content when the application that copied it closes");
+      _ ("Keep clipboard content when source closes"));
+  gtk_widget_set_tooltip_text (self->keep_content_check,
+                               _ ("Restore clipboard content when the "
+                                  "application that copied it closes"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->keep_content_check), FALSE,
                       FALSE, 0);
 
-  self->confirm_clear_check
-      = gtk_check_button_new_with_label ("Confirm before clearing history");
+  self->confirm_clear_check = gtk_check_button_new_with_label (
+      _ ("Confirm before clearing history"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->confirm_clear_check),
                       FALSE, FALSE, 0);
 
   self->paste_on_select_check = gtk_check_button_new_with_label (
-      "Automatically paste when selecting from history");
+      _ ("Automatically paste when selecting from history"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->paste_on_select_check),
                       FALSE, FALSE, 0);
 
   /* Clipboard section */
   gtk_box_pack_start (GTK_BOX (vbox),
-                      create_section_label ("Clipboard Sources"), FALSE, FALSE,
-                      0);
+                      create_section_label (_ ("Clipboard Sources")), FALSE,
+                      FALSE, 0);
 
   self->use_primary_check = gtk_check_button_new_with_label (
-      "Track primary selection (middle-click paste)");
+      _ ("Track primary selection (middle-click paste)"));
   gtk_widget_set_tooltip_text (self->use_primary_check,
-                               "Also save text selected with the mouse");
+                               _ ("Also save text selected with the mouse"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->use_primary_check), FALSE,
                       FALSE, 0);
 
   self->sync_selections_check = gtk_check_button_new_with_label (
-      "Synchronize clipboard and primary selection");
+      _ ("Synchronize clipboard and primary selection"));
   gtk_widget_set_tooltip_text (self->sync_selections_check,
-                               "Keep both selections synchronized");
+                               _ ("Keep both selections synchronized"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->sync_selections_check),
                       FALSE, FALSE, 0);
 
   /* Content types section */
-  gtk_box_pack_start (GTK_BOX (vbox), create_section_label ("Content Types"),
-                      FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vbox),
+                      create_section_label (_ ("Content Types")), FALSE, FALSE,
+                      0);
 
   self->save_images_check
-      = gtk_check_button_new_with_label ("Save images to history");
+      = gtk_check_button_new_with_label (_ ("Save images to history"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->save_images_check), FALSE,
                       FALSE, 0);
 
   self->save_files_check
-      = gtk_check_button_new_with_label ("Save file paths to history");
+      = gtk_check_button_new_with_label (_ ("Save file paths to history"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->save_files_check), FALSE,
                       FALSE, 0);
 
   self->show_preview_check
-      = gtk_check_button_new_with_label ("Show image previews in history");
+      = gtk_check_button_new_with_label (_ ("Show image previews in history"));
   gtk_box_pack_start (GTK_BOX (vbox),
                       create_indented_widget (self->show_preview_check), FALSE,
                       FALSE, 0);
 
   /* Filter section */
-  gtk_box_pack_start (GTK_BOX (vbox), create_section_label ("Filtering"),
+  gtk_box_pack_start (GTK_BOX (vbox), create_section_label (_ ("Filtering")),
                       FALSE, FALSE, 0);
 
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 6);
-  label = gtk_label_new ("Exclude pattern:");
+  label = gtk_label_new (_ ("Exclude pattern:"));
   gtk_box_pack_start (GTK_BOX (box), label, FALSE, FALSE, 0);
 
   self->exclude_pattern_entry = gtk_entry_new ();
   gtk_entry_set_placeholder_text (GTK_ENTRY (self->exclude_pattern_entry),
-                                  "Regular expression");
+                                  _ ("Regular expression"));
   gtk_widget_set_tooltip_text (
       self->exclude_pattern_entry,
-      "Text matching this pattern will not be saved (e.g., passwords)");
+      _ ("Text matching this pattern will not be saved (e.g., passwords)"));
   gtk_widget_set_hexpand (self->exclude_pattern_entry, TRUE);
   gtk_box_pack_start (GTK_BOX (box), self->exclude_pattern_entry, TRUE, TRUE,
                       0);

@@ -1,7 +1,9 @@
 /*
  * clipman-item.c
+ *
  * MATE Clipboard Manager
  * A clipboard history manager for the MATE Desktop
+ * 
  * Copyright 2025 Kerem Soke
  * 
  * This program is free software; you can redistribute it and/or modify
@@ -251,7 +253,7 @@ clipman_item_new_image (GdkPixbuf *pixbuf, ClipmanSource source)
     }
 
   self->label
-      = g_strdup_printf ("[Image %dx%d]", gdk_pixbuf_get_width (pixbuf),
+      = g_strdup_printf (_ ("[Image %dx%d]"), gdk_pixbuf_get_width (pixbuf),
                          gdk_pixbuf_get_height (pixbuf));
 
   return self;
@@ -287,12 +289,12 @@ clipman_item_new_files (gchar **uris, ClipmanSource source)
   if (count == 1)
     {
       gchar *basename = g_path_get_basename (uris[0]);
-      self->label = g_strdup_printf ("[File: %s]", basename);
+      self->label = g_strdup_printf (_ ("[File: %s]"), basename);
       g_free (basename);
     }
   else
     {
-      self->label = g_strdup_printf ("[%u files]", count);
+      self->label = g_strdup_printf (_ ("[%u files]"), count);
     }
 
   g_string_free (joined, TRUE);
